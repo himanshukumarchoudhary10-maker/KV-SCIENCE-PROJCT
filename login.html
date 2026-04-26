@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>Login — KV Project</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="loginPage">
+    <!-- Ambient background -->
+    <div class="bg" aria-hidden="true"></div>
+
+    <main class="shell loginShell" id="loginShell">
+      <section class="loginModal" id="loginModal" aria-label="Login to system">
+        <h1 class="modalTitle" style="text-align: center;">Secure Access</h1>
+        <p style="text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 24px;">
+          Please enter the password to view the project showcase.
+        </p>
+
+        <form class="modalForm" id="loginForm">
+          <div class="field">
+            <input 
+              type="password" 
+              id="password" 
+              class="modalInput" 
+              placeholder="Enter password" 
+              required 
+            />
+            <button type="button" id="togglePassword" class="peekBtn" style="right: 8px;" aria-label="Toggle password visibility">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          
+          <div id="errorMsg" class="error">Incorrect password. Please try again.</div>
+
+          <div class="actions">
+            <button type="submit" class="btn modalBtn">Log In</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <!-- Loader Wrapper -->
+    <div class="loader-wrapper" id="loaderWrapper">
+      <!-- Decor elements -->
+      <div class="loader-decor-tr">
+        <div class="loader-decor-row">
+          <span>LATENCY: 14ms</span>
+        </div>
+      </div>
+      <div class="loader-decor-bl">
+        <div class="loader-decor-row">
+          <span class="loader-decor-dot"></span>
+          <span>SYSTEMS NOMINAL</span>
+        </div>
+        <div class="loader-decor-sub">X-RAY DELTA 4.0 // VECTOR PROTOCOL</div>
+      </div>
+
+      <div class="longfazers">
+        <span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="loader-container">
+        <div class="loader">
+          <span>
+            <span></span><span></span><span></span><span></span>
+          </span>
+          <div class="loader-base">
+            <span></span>
+            <div class="loader-face"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="loader-text">
+        <h1 class="loader-title">Processing Request</h1>
+        <p class="loader-sub">Synchronizing with global neural networks</p>
+        <div class="loader-progress">
+          <div class="loader-progress-bar"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Toggle password visibility
+      const togglePassword = document.getElementById('togglePassword');
+      const passwordField = document.getElementById('password');
+
+      togglePassword.addEventListener('click', function () {
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        
+        // Update icon based on state
+        if (type === 'text') {
+          this.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>`;
+          this.style.color = 'var(--gold-base)';
+          this.style.borderColor = 'var(--gold-base)';
+        } else {
+          this.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>`;
+          this.style.color = 'var(--muted)';
+          this.style.borderColor = 'var(--glass-border)';
+        }
+      });
+
+      document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const pwd = document.getElementById('password').value;
+        const errorMsg = document.getElementById('errorMsg');
+        const btn = document.querySelector('.modalBtn');
+        const modal = document.getElementById('loginModal');
+        const loaderWrapper = document.getElementById('loaderWrapper');
+        
+        if (pwd === 'HEMANSHU') {
+          errorMsg.classList.remove('show');
+          btn.textContent = 'Authenticating...';
+          btn.disabled = true;
+          
+          // Save login state in sessionStorage
+          sessionStorage.setItem('kv_logged_in', 'true');
+          
+          // Fade out modal
+          modal.style.transition = 'opacity 0.4s ease';
+          modal.style.opacity = '0';
+          
+          setTimeout(() => {
+            modal.style.display = 'none';
+            // Show loader
+            loaderWrapper.classList.add('active');
+            
+            // Wait for loader animation to play then redirect
+            setTimeout(() => {
+              window.location.replace('./home.html');
+            }, 3500);
+          }, 400);
+
+        } else {
+          errorMsg.classList.add('show');
+          document.getElementById('password').value = '';
+          document.getElementById('password').focus();
+          
+          // Shake effect
+          modal.style.transition = 'transform 0.1s ease';
+          modal.style.transform = 'translateX(10px)';
+          setTimeout(() => modal.style.transform = 'translateX(-10px)', 100);
+          setTimeout(() => modal.style.transform = 'translateX(10px)', 200);
+          setTimeout(() => modal.style.transform = 'translateX(0)', 300);
+          setTimeout(() => modal.style.transition = 'none', 400);
+        }
+      });
+    </script>
+  </body>
+</html>
